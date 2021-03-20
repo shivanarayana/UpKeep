@@ -1,0 +1,5 @@
+UpKeep\Repository\UserRepository.class
+UpKeep\DAO\User.class
+UpKeep\Controller\UserController.class
+UpKeep\UpKeepApplication.class
+UpKeep\Controller\Status.class
