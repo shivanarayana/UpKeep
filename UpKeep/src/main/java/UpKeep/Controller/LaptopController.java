@@ -37,7 +37,7 @@ public class LaptopController {
         }
         else return Status.FAILURE;
     }
-
+ //re-register for same person & re-register different person
     @PostMapping("/laptop/reregister")
     public Status reregisterLaptop(@Valid @RequestBody Laptop oldLaptop) {
         if(oldLaptop.getUsrlaptop() == null){

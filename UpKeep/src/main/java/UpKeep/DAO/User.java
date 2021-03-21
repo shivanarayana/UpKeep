@@ -49,6 +49,19 @@ public class User {
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public
+    FullName getFullNameUser() {
+        return fullNameUser;
+    }
+
+    public
+    void setFullNameUser(FullName fullNameUser) {
+        this.fullNameUser = fullNameUser;
+    }
 
     public
     List<Laptop> getLaptops() {
