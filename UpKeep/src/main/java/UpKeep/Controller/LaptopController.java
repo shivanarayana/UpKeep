@@ -28,11 +28,11 @@ public class LaptopController {
             return Status.NO_USER_EXIST_TO_ASSIGN;
         }
         Laptop searchLaptop = lapServ.searchLaptop(newLaptop);
-        if(searchLaptop!=null && newLaptop.isReassign()==false){
+        if(searchLaptop!=null && newLaptop.isReassign()){
             return Status.LAPTOP_ALREADY_ASSIGNED_CANNOT_REGISTER;
         }
         newLaptop.setPrevUsers("NEW");
-        if(lapServ.addNewLaptop(newLaptop)==true){
+        if(lapServ.addNewLaptop(newLaptop)){
             return Status.LAPTOP_ADDED;
         }
         else return Status.FAILURE;
@@ -43,7 +43,7 @@ public class LaptopController {
         if(oldLaptop.getUsrlaptop() == null){
             return Status.NO_USER_EXIST_TO_ASSIGN;
         }
-        if(oldLaptop.isReassign() == false){
+        if(oldLaptop.isReassign()){
             return Status.LAPTOP_ALREADY_ASSIGNED_CANNOT_REGISTER;
         }
         Laptop searchLaptop = lapServ.searchLaptop(oldLaptop);
@@ -53,7 +53,7 @@ public class LaptopController {
         if(oldLaptop.getUsrlaptop().getUsername().equals(searchLaptop.getLname())){
             return Status.LAPTOP_ALREADY_ASSIGNED_TO_SAME_PERSON;
         }
-        if(lapServ.addNewLaptop(oldLaptop)==true){
+        if(lapServ.addNewLaptop(oldLaptop)){
             return Status.LAPTOP_REASSIGN_SUCCESSFUL;
         }
         else return Status.FAILURE;
@@ -78,7 +78,7 @@ public class LaptopController {
     @GetMapping("/laptop/show")
     public String getAllLaptops(){
         List<Laptop> laptops = laptopRepository.findAll();
-        return laptops != null ? laptops.toString() : Status.NO_LAPTOP_EXIST.toString();
+        return laptops.toString();
     }
 
     @GetMapping("/laptop/{lid}")

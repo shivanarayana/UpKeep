@@ -20,6 +20,9 @@ public class User {
     @OneToOne(mappedBy = "namefield")
     private FullName fullNameUser;
 
+//    @ManyToMany(mappedBy = "parkuser")
+//    private List<Parking> myparking;
+
     public User() {
     }
     public User(@NotBlank String username,

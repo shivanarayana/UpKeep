@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "laptops")
 public class Laptop {
     @Id
-    @GeneratedValue
+  //  @GeneratedValue
     private long lid;
     private String lname;
     private String compname;
@@ -105,4 +105,10 @@ public class Laptop {
                 ", usrlaptop=" + usrlaptop +
                 '}';
     }
+
+    public Laptop(){
+
+    }
+
+
 }
