@@ -20,8 +20,8 @@ public class User {
     @OneToOne(mappedBy = "namefield")
     private FullName fullNameUser;
 
-//    @ManyToMany(mappedBy = "parkuser")
-//    private List<Parking> myparking;
+    @ManyToMany(mappedBy = "parkuser")
+    private List<Parking> myparking;
 
     public User() {
     }
@@ -74,6 +74,16 @@ public class User {
     public
     void setLaptops(List<Laptop> laptops) {
         this.laptops = laptops;
+    }
+
+    public
+    List<Parking> getMyparking() {
+        return myparking;
+    }
+
+    public
+    void setMyparking(List<Parking> myparking) {
+        this.myparking = myparking;
     }
 
     @Override

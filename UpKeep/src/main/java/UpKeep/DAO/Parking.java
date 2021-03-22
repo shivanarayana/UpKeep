@@ -15,8 +15,8 @@ public class Parking {
     private String vehicletype;
     private boolean status;
 
-//    @ManyToMany
-//    private List<User> parkuser = new ArrayList<>();
+    @ManyToMany
+    private List<User> parkuser = new ArrayList<>();
 
     public Parking(){
 
@@ -52,13 +52,13 @@ public class Parking {
         this.status = status;
     }
 
-//    public
-//    List<User> getParkuser() {
-//        return parkuser;
-//    }
-//
-//    public
-//    void setParkuser(List<User> parkuser) {
-//        this.parkuser = parkuser;
-//    }
+    public
+    List<User> getParkuser() {
+        return parkuser;
+    }
+
+    public
+    void setParkuser(List<User> parkuser) {
+        this.parkuser = parkuser;
+    }
 }

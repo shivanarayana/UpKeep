@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class LaptopController {
@@ -28,10 +29,9 @@ public class LaptopController {
             return Status.NO_USER_EXIST_TO_ASSIGN;
         }
         Laptop searchLaptop = lapServ.searchLaptop(newLaptop);
-        if(searchLaptop!=null && newLaptop.isReassign()){
+        if(searchLaptop.getLid()!=0 && newLaptop.isReassign()){
             return Status.LAPTOP_ALREADY_ASSIGNED_CANNOT_REGISTER;
         }
-        newLaptop.setPrevUsers("NEW");
         if(lapServ.addNewLaptop(newLaptop)){
             return Status.LAPTOP_ADDED;
         }
@@ -43,16 +43,17 @@ public class LaptopController {
         if(oldLaptop.getUsrlaptop() == null){
             return Status.NO_USER_EXIST_TO_ASSIGN;
         }
-        if(oldLaptop.isReassign()){
+        if(oldLaptop.isReassign()==false){
             return Status.LAPTOP_ALREADY_ASSIGNED_CANNOT_REGISTER;
         }
         Laptop searchLaptop = lapServ.searchLaptop(oldLaptop);
-        if(searchLaptop!=null){
-            oldLaptop.setPrevUsers(searchLaptop.getPrevUsers()+"-->"+searchLaptop.getLname());
-        }
+//        if(searchLaptop!=null){
+//            oldLaptop.setPrevUsers(searchLaptop.getPrevUsers()+"-->"+searchLaptop.getLname());
+//        }
         if(oldLaptop.getUsrlaptop().getUsername().equals(searchLaptop.getLname())){
             return Status.LAPTOP_ALREADY_ASSIGNED_TO_SAME_PERSON;
         }
+        oldLaptop.setPrevUsers(searchLaptop.getPrevUsers());
         if(lapServ.addNewLaptop(oldLaptop)){
             return Status.LAPTOP_REASSIGN_SUCCESSFUL;
         }
@@ -62,7 +63,7 @@ public class LaptopController {
     @PostMapping("/laptop/unregister")
     public Status logLaptopOut(@Valid @RequestBody Laptop laptop) {
         Laptop searchLaptop = lapServ.searchLaptop(laptop);
-        if(searchLaptop == null){
+        if(searchLaptop.getLid() == 0){
             return Status.NO_SUCH_LAPTOP_TO_UNASSIGN;
         }
         laptopRepository.delete(searchLaptop);
@@ -83,10 +84,7 @@ public class LaptopController {
 
     @GetMapping("/laptop/{lid}")
     public String getLaptopById(@PathVariable long lid){
-        Laptop laptopId = new Laptop();
-        laptopId.setLid(lid);
-        laptopId = lapServ.searchLaptop(laptopId);
+        Optional<Laptop> laptopId = laptopRepository.findById(lid);//laptopId.setLid(lid);//laptopId = lapServ.searchLaptop(laptopId);
         return laptopId != null ? laptopId.toString() : Status.NO_SUCH_LAPTOP_EXISTS.toString();
     }
-
 }

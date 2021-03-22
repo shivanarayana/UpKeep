@@ -34,16 +34,8 @@ public class UserController {
             if (userService.searchUser(newUser) != null) {
                 return Status.USER_ALREADY_EXISTS;
             }
-
-        userRepository.save(newUser);
-        Laptop newLaptopObj = new Laptop();
-        newLaptopObj.setUsrlaptop(newUser);
-        laptopService.addNewLaptop(newLaptopObj);
-        FullName fullName= new FullName();
-        fullName.setUsername(newUser.getUsername());
-        fullName.setNamefield(newUser);
-        fullNameService.addFieldFullName(fullName); // one to one relation not required can prove relation ship with out this
-        return Status.USER_REGISTERED_WITH_LAPTOP;
+            userService.registerUser(newUser);
+            return Status.USER_REGISTERED_WITH_LAPTOP;
     }
 
     @PostMapping("/users/login")
@@ -70,28 +62,31 @@ public class UserController {
 
     @PostMapping("/users/registermultiplelaptops")
     public Status registerUserLaptops(@Valid @RequestBody User newUser) {
-
-        List<Laptop> morelaptops = new ArrayList<>();
-        morelaptops = newUser.getLaptops();
-
-        User usermullaps = new User();
-       // getuser.setId(newUser.getId());
-        usermullaps.setUsername(newUser.getUsername());
-        usermullaps.setPassword(newUser.getPassword());
-        usermullaps.setId(newUser.getId());
-
-        if(userService.searchUser(usermullaps) == null) userRepository.save(usermullaps);
-// inorder for user one to many relation ship to work first user should be added to database otherwise one to many exception occurs
-
-        for (Laptop lap : newUser.getLaptops()){
-            usermullaps.getLaptops().add(lap);
-            lap.setUsrlaptop(usermullaps);
-            laptopRepoUser.save(lap);
+        User other = userService.searchUser(newUser);
+        if (other != null) {
+            for (Laptop lap : newUser.getLaptops()) {
+                lap.setUsrlaptop(other);
+                laptopRepoUser.save(lap);
+                other.getLaptops().add(lap);
+            }
+            userRepository.save(other);
         }
+        else {      // if(userService.searchUser(usermullaps) == null)
+            User usermullaps = new User();
+            usermullaps.setUsername(newUser.getUsername());
+            usermullaps.setPassword(newUser.getPassword());
 
-        userRepository.save(usermullaps);
-
+            userRepository.save(usermullaps);
+// inorder for user one to many relation ship to work first user should be added to database otherwise one to many exception occurs
+            for (Laptop lap : newUser.getLaptops()) {
+                lap.setUsrlaptop(usermullaps);
+                laptopRepoUser.save(lap);
+                usermullaps.getLaptops().add(lap);
+            }
+            userRepository.save(usermullaps);
+        }
         return Status.UPDATE_SUCCESS;
+
     }
 
     @PostMapping("/users/laptop")

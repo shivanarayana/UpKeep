@@ -38,10 +38,12 @@ public class LaptopService {
         List<Laptop> laptops = laptopRepository.findAll();
         for (Laptop laptop : laptops) {
             if (laptop.equals(newLaptop)) {
+                laptop.setPrevUsers(laptop.getPrevUsers()+"-->"+laptop.getLname());
                 return laptop;
             }
         }
-        return null;
+        newLaptop.setPrevUsers("NEW");
+        return newLaptop;
     }
 
     public List<Laptop> searchLaptopsForUser(User user){
