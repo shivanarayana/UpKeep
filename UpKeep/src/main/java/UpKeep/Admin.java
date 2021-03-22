@@ -16,6 +16,7 @@ class Admin {
         User user = em.find(User.class,51L);
 //        Transaction steps
 
+
 //        em.getTransaction().begin();
 //
 //        em.persist(a); em.persist(p); em.persist(c);
