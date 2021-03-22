@@ -1,5 +1,11 @@
 # UpKeep
 
+One to One [user & fullname]
+||
+One to Many [user & laptop]
+||
+Many to Many [user & parking]
+
 https://www.javadevjournal.com/spring-boot/spring-boot-with-hibernate/
 Laptop:
 Post Requests: 
